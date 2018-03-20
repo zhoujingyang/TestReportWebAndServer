@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.baidu.ocr">
+
+    <select id = "getUser" resultType="com.baidu.ocr.model.demo">
+        select Host,User from mysql.User;
+    </select>
+
+
+
+
+    <insert id="insertDemo" keyProperty="id" parameterType="Demo">
+        INSERT INTO "report"."guocheng"
+        (ID)
+        VALUES
+        (#{id,jdbcType=VARCHAR})
+    </insert>
+
+
+<!--获取所有的测试报告-->
+    <select id="getTestReports" resultType="com.baidu.ocr.model.TestReport" parameterType="map">
+        select
+            id,reportId,reportName,QAName,RDName,testCount,reportWriteTime,testConclusion,finalReportPath
+        from
+            report
+        limit  #{start},#{numbersOfEveryPage}
+            ;
+
+    </select>
+
+<!--根据测试报告名称查询测试报告-->
+    <select id="getTestReportsForName" resultType="com.baidu.ocr.model.TestReport" parameterType="String">
+        select
+        id,reportId,reportName,QAName,RDName,testCount,reportWriteTime,testConclusion,finalReportPath
+        from
+            report
+        where reportName like concat ('%',#{reportName},'%');
+
+    </select>
+
+
+    <!--根据reportid查询最终版本测试报告地址-->
+    <select id="getFinalReportOfReportId" resultType="String" parameterType="String">
+        select
+            finalReportPath
+        from
+            report
+        where
+            reportId = #{reportId};
+
+    </select>
+
+    <!--存储用户上传的html报告中的部分信息到数据库中-->
+    <insert id="insertHtmlInfo" keyProperty="id" parameterType="UploadHtmlInfo">
+        INSERT INTO report
+        (reportId,reportName,QAName,RDName,testCount,reportWriteTime,testConclusion,fileReportPath)
+        VALUES
+        (
+        #{reportId,jdbcType=VARCHAR},
+        #{reportName,jdbcType=VARCHAR},
+        #{QAName,jdbcType=VARCHAR},
+        #{RDName,jdbcType=VARCHAR},
+        #{testCount,jdbcType=VARCHAR},
+        #{reportWriteTime,jdbcType=VARCHAR},
+        #{testConclusion,jdbcType=VARCHAR},
+        #{fileReportPath,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <update id="updateProcessAndFinalReportPath" parameterType="UploadHtmlInfo">
+        UPDATE report
+        SET
+            processReportPath = #{processReportPath},
+            finalReportPath = #{finalReportPath}
+        WHERE reportId = #{reportId};
+    </update>
+
+</mapper>

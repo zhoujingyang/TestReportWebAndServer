@@ -1,0 +1,27 @@
+server:
+   port: 8888
+
+logging:
+    path: logs
+    file: report.log
+
+
+spring:
+   application:
+          name: report
+   datasource:
+       driver-class-name: com.mysql.jdbc.Driver
+       url: jdbc:mysql://10.100.46.162:8806/testreport
+       username: admin
+       password: 123456
+
+mybatis:
+    type-aliases-package: com.baidu.ocr.model
+    mapper-locations:
+       - mapper/*
+
+
+file:
+    #path需要是绝对路径，存储到tomcat的root目录下
+    path: /workspace/apache-tomcat-9.0.2/webapps/ROOT/
+    reportHtmlService : http://localhost:8088/

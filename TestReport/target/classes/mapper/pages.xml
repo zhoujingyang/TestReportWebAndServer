@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.baidu.ocr">
+
+
+
+    <!--根据测试报告总条数-->
+    <select id="getTotalPages" resultType="Integer" >
+        select
+            count(*)
+        from
+            report;
+    </select>
+
+</mapper>
